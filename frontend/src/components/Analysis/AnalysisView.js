@@ -6,7 +6,7 @@ const AnalysisView = ({ documentId }) => {
     useEffect(() => {
         if (documentId) {
             const fetchAnalysis = async () => {
-                const response = await fetch(`http://localhost:8000/documents/${documentId}`);
+                const response = await fetch(`/api/documents/${documentId}`);
                 const data = await response.json();
                 setAnalysis(data);
             };

@@ -7,7 +7,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchDocuments = async () => {
-            const response = await fetch('http://localhost:8000/documents');
+            const response = await fetch('/api/documents');
             const data = await response.json();
             setDocuments(data);
         };
