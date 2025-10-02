@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class UserCreate(BaseModel):
     username: str
@@ -16,3 +17,14 @@ class User(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class Document(BaseModel):
+    id: int
+    filename: str
+    upload_date: datetime
+    file_size: int
+    mime_type: str
+    status: str
+
+    class Config:
+        orm_mode = True

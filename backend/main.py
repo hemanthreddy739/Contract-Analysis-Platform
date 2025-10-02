@@ -1,12 +1,14 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 
 from . import schemas
 from .auth import auth_service, password_utils
 from .database import get_db, engine
-from .models import user
+from .models import user, document
+from .services import document_service
 
 user.Base.metadata.create_all(bind=engine)
+document.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -30,6 +32,20 @@ def login(form_data: schemas.UserCreate, db: Session = Depends(get_db)):
         )
     # This is where session management would go. For now, we'll just return a success message.
     return {"message": "Login successful"}
+
+
+@app.post("/documents/upload", response_model=schemas.Document)
+def upload_document(file: UploadFile = File(...), db: Session = Depends(get_db)):
+    # Hardcoded user_id for now. Will be replaced with authenticated user.
+    user_id = 1
+    return document_service.create_document(
+        db=db,
+        user_id=user_id,
+        file_name=file.filename,
+        file_size=file.file._file.tell(),
+        mime_type=file.content_type,
+        file=file.file,
+    )
 
 
 @app.get("/")
