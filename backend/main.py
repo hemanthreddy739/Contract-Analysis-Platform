@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, BackgroundTasks
 from sqlalchemy.orm import Session
+from typing import List
 
 from . import schemas
 from .auth import auth_service, password_utils
@@ -52,6 +53,21 @@ def upload_document(
         file=file.file,
     )
     background_tasks.add_task(analysis_service.analyze_document, db, db_document)
+    return db_document
+
+
+@app.get("/documents", response_model=List[schemas.Document])
+def get_documents(db: Session = Depends(get_db)):
+    # Hardcoded user_id for now. Will be replaced with authenticated user.
+    user_id = 1
+    return db.query(document.Document).filter(document.Document.user_id == user_id).all()
+
+
+@app.get("/documents/{document_id}")
+def get_document(document_id: int, db: Session = Depends(get_db)):
+    db_document = db.query(document.Document).filter(document.Document.id == document_id).first()
+    if not db_document:
+        raise HTTPException(status_code=404, detail="Document not found")
     return db_document
 
 

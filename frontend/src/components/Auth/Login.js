@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../../../src/context/AuthContext';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const history = useHistory();
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -12,7 +16,13 @@ const Login = () => {
             body: JSON.stringify({ username, password, email: '' })
         });
         const data = await response.json();
-        console.log(data);
+        if (response.ok) {
+            login({ username }); // Assuming login returns user data
+            history.push('/dashboard');
+        } else {
+            console.error(data.detail);
+            alert(data.detail);
+        }
     };
 
     return (
