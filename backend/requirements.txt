@@ -1,0 +1,9 @@
+
+fastapi
+sqlalchemy
+psycopg2-binary
+boto3
+google-generativeai
+bcrypt
+python-multipart
+uvicorn
