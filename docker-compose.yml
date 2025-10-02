@@ -9,16 +9,14 @@ services:
     depends_on:
       - backend
 
-  backend:
-    build:
-      context: ./backend
-    ports:
-      - "8000:8000"
-    environment:
-      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
-    depends_on:
-      db:
-        condition: service_healthy
+    backend:
+        build: ./backend
+        ports:
+            - "8000:8000"
+        depends_on:
+            - db
+        env_file:
+            - .env
 
   db:
     image: postgres:13-alpine
