@@ -15,9 +15,9 @@ s3_client = boto3.client(
     region_name=AWS_REGION
 )
 
-def upload_file_to_s3(file, user_id: int, file_name: str):
+def upload_file_to_s3(file, user_id: int, username: str, file_name: str):
     try:
-        s3_key = f"user_{user_id}/{file_name}"
+        s3_key = f"{username}/{file_name}"
         s3_client.upload_fileobj(file, S3_BUCKET_NAME, s3_key)
         return s3_key
     except NoCredentialsError:

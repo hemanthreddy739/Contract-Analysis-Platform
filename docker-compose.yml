@@ -1,5 +1,3 @@
-
-
 services:
   frontend:
     build:
@@ -7,16 +5,16 @@ services:
     ports:
       - "3000:80"
     depends_on:
-      - backend
+      - backend # The frontend depends on the backend
 
-    backend:
-        build: ./backend
-        ports:
-            - "8000:8000"
-        depends_on:
-            - db
-        env_file:
-            - .env
+  backend: # This line must be at the same indentation level as 'frontend'
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
 
   db:
     image: postgres:13-alpine
