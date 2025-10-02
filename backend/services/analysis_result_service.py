@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from ..models.analysis_result import AnalysisResult
+from models.analysis_result import AnalysisResult
 
 def create_analysis_result(
     db: Session, document_id: int, extracted_info: dict, risks_identified: dict, summary: str

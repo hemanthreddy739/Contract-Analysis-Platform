@@ -1,5 +1,5 @@
 from . import document_processor, gemini_analyzer, s3_service, analysis_result_service
-from ..models.document import Document
+from models.document import Document
 from sqlalchemy.orm import Session
 import time
 

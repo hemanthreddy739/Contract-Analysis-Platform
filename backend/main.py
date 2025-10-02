@@ -2,11 +2,11 @@ from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Backgroun
 from sqlalchemy.orm import Session
 from typing import List
 
-from . import schemas
-from .auth import auth_service, password_utils
-from .database import get_db, engine
-from .models import user, document, analysis_result
-from .services import document_service, analysis_service
+from schemas import UserCreate, User, Document
+from auth import auth_service, password_utils
+from database import get_db, engine
+from models import user, document, analysis_result
+from services import document_service, analysis_service
 
 user.Base.metadata.create_all(bind=engine)
 document.Base.metadata.create_all(bind=engine)
@@ -15,8 +15,8 @@ analysis_result.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
-@app.post("/auth/register", response_model=schemas.User)
-def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
+@app.post("/auth/register", response_model=User)
+def register(user: UserCreate, db: Session = Depends(get_db)):
     db_user = auth_service.get_user_by_username(db, username=user.username)
     if db_user:
         raise HTTPException(status_code=400, detail="Username already registered")
@@ -24,7 +24,7 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @app.post("/auth/login")
-def login(form_data: schemas.UserCreate, db: Session = Depends(get_db)):
+def login(form_data: UserCreate, db: Session = Depends(get_db)):
     user = auth_service.get_user_by_username(db, username=form_data.username)
     if not user or not password_utils.verify_password(form_data.password, user.password_hash):
         raise HTTPException(
@@ -36,7 +36,7 @@ def login(form_data: schemas.UserCreate, db: Session = Depends(get_db)):
     return {"message": "Login successful"}
 
 
-@app.post("/documents/upload", response_model=schemas.Document)
+@app.post("/documents/upload", response_model=Document)
 def upload_document(
     background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
@@ -56,7 +56,7 @@ def upload_document(
     return db_document
 
 
-@app.get("/documents", response_model=List[schemas.Document])
+@app.get("/documents", response_model=List[Document])
 def get_documents(db: Session = Depends(get_db)):
     # Hardcoded user_id for now. Will be replaced with authenticated user.
     user_id = 1

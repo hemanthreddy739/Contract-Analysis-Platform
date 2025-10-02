@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from ..models.document import Document
-from ..services import s3_service
+from models.document import Document
+from services import s3_service
 
 def create_document(
     db: Session, user_id: int, file_name: str, file_size: int, mime_type: str, file
