@@ -15,7 +15,7 @@ analysis_result.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
-@app.post("/auth/register", response_model=User)
+@app.post("/api/auth/register", response_model=User)
 def register(user: UserCreate, db: Session = Depends(get_db)):
     db_user = auth_service.get_user_by_username(db, username=user.username)
     if db_user:
@@ -23,7 +23,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     return auth_service.create_user(db=db, username=user.username, email=user.email, password=user.password)
 
 
-@app.post("/auth/login")
+@app.post("/api/auth/login")
 def login(form_data: UserCreate, db: Session = Depends(get_db)):
     user = auth_service.get_user_by_username(db, username=form_data.username)
     if not user or not password_utils.verify_password(form_data.password, user.password_hash):
@@ -36,7 +36,7 @@ def login(form_data: UserCreate, db: Session = Depends(get_db)):
     return {"message": "Login successful"}
 
 
-@app.post("/documents/upload", response_model=Document)
+@app.post("/api/documents/upload", response_model=Document)
 def upload_document(
     background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
@@ -56,14 +56,14 @@ def upload_document(
     return db_document
 
 
-@app.get("/documents", response_model=List[Document])
+@app.get("/api/documents", response_model=List[Document])
 def get_documents(db: Session = Depends(get_db)):
     # Hardcoded user_id for now. Will be replaced with authenticated user.
     user_id = 1
     return db.query(document.Document).filter(document.Document.user_id == user_id).all()
 
 
-@app.get("/documents/{document_id}")
+@app.get("/api/documents/{document_id}")
 def get_document(document_id: int, db: Session = Depends(get_db)):
     db_document = db.query(document.Document).filter(document.Document.id == document_id).first()
     if not db_document:
