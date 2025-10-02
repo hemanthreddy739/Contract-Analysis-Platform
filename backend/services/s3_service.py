@@ -1,6 +1,7 @@
 import boto3
 import os
 from botocore.exceptions import NoCredentialsError
+from io import BytesIO
 
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
@@ -19,5 +20,14 @@ def upload_file_to_s3(file, user_id: int, file_name: str):
         s3_key = f"user_{user_id}/{file_name}"
         s3_client.upload_fileobj(file, S3_BUCKET_NAME, s3_key)
         return s3_key
+    except NoCredentialsError:
+        return None
+
+def download_file_from_s3(s3_key: str) -> BytesIO:
+    try:
+        file_obj = BytesIO()
+        s3_client.download_fileobj(S3_BUCKET_NAME, s3_key, file_obj)
+        file_obj.seek(0)
+        return file_obj
     except NoCredentialsError:
         return None

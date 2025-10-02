@@ -16,3 +16,4 @@ class Document(Base):
     status = Column(String(50), nullable=False)
 
     owner = relationship("User", back_populates="documents")
+    analysis_results = relationship("AnalysisResult", back_populates="document")

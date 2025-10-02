@@ -1,14 +1,15 @@
-from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, BackgroundTasks
 from sqlalchemy.orm import Session
 
 from . import schemas
 from .auth import auth_service, password_utils
 from .database import get_db, engine
-from .models import user, document
-from .services import document_service
+from .models import user, document, analysis_result
+from .services import document_service, analysis_service
 
 user.Base.metadata.create_all(bind=engine)
 document.Base.metadata.create_all(bind=engine)
+analysis_result.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -35,10 +36,14 @@ def login(form_data: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @app.post("/documents/upload", response_model=schemas.Document)
-def upload_document(file: UploadFile = File(...), db: Session = Depends(get_db)):
+def upload_document(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+):
     # Hardcoded user_id for now. Will be replaced with authenticated user.
     user_id = 1
-    return document_service.create_document(
+    db_document = document_service.create_document(
         db=db,
         user_id=user_id,
         file_name=file.filename,
@@ -46,6 +51,8 @@ def upload_document(file: UploadFile = File(...), db: Session = Depends(get_db))
         mime_type=file.content_type,
         file=file.file,
     )
+    background_tasks.add_task(analysis_service.analyze_document, db, db_document)
+    return db_document
 
 
 @app.get("/")
