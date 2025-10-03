@@ -7,31 +7,43 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchDocuments = async () => {
-            const response = await fetch('/api/documents');
-            const data = await response.json();
-            setDocuments(data);
+            try {
+                const response = await fetch('/api/documents');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                setDocuments(data);
+            } catch (error) {
+                console.error("Failed to fetch documents:", error);
+            }
         };
         fetchDocuments();
     }, []);
 
+    const handleViewAnalysis = (doc) => {
+        setSelectedDocument(doc);
+    };
+
     return (
-        <div>
-            <div>
-                <h2>Dashboard</h2>
+        <div className="dashboard-container">
+            <div className="document-list">
+                <h2>Documents</h2>
                 <ul>
                     {documents.map(doc => (
-                        <li key={doc.id}>
-                            {doc.filename} - {doc.status}
-                            <button onClick={() => setSelectedDocument(doc.id)}>View Analysis</button>
+                        <li key={doc.id} className={selectedDocument && selectedDocument.id === doc.id ? 'selected' : ''}>
+                            <span>{doc.filename} - <strong>{doc.status}</strong></span>
+                            <button onClick={() => handleViewAnalysis(doc)}>View Analysis</button>
                         </li>
                     ))}
                 </ul>
             </div>
-            <div>
-                <AnalysisView documentId={selectedDocument} />
+            <div className="analysis-section">
+                <AnalysisView document={selectedDocument} />
             </div>
         </div>
     );
 };
 
 export default Dashboard;
+
