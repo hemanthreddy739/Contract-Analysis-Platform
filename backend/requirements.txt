@@ -2,7 +2,7 @@ fastapi
 sqlalchemy
 psycopg2-binary
 boto3
-google-generativeai==0.5.4
+google-generativeai
 bcrypt
 python-multipart
 uvicorn
