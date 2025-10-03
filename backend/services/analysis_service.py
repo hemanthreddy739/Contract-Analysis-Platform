@@ -27,6 +27,7 @@ def analyze_document(db: Session, document: Document):
             extracted_info={"data": key_information},
             risks_identified={"data": risk_assessment},
             summary=summary,
+            processing_time=processing_time,
         )
 
         document.status = "analyzed"
