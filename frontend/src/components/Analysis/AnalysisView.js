@@ -11,7 +11,7 @@ const AnalysisView = ({ documentId }) => {
                 setLoading(true);
                 setError(null);
                 try {
-                    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/documents/${documentId}`);
+                    const response = await fetch(`/api/documents/${documentId}`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
