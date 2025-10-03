@@ -1,7 +1,11 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
+
+export const useAuth = () => {
+    return useContext(AuthContext);
+};
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -12,20 +16,20 @@ export const AuthProvider = ({ children }) => {
         const storedUser = localStorage.getItem('user');
         return storedUser ? JSON.parse(storedUser) : null;
     });
-    const navigate = useNavigate();
+    const history = useHistory();
 
     const login = (userData) => {
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
         setIsAuthenticated(true);
-        navigate('/dashboard');
+        history.push('/dashboard');
     };
 
     const logout = () => {
         localStorage.removeItem('user');
         setUser(null);
         setIsAuthenticated(false);
-        navigate('/login');
+        history.push('/login');
     };
 
     return (
