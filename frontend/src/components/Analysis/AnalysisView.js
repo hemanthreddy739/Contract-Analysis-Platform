@@ -11,7 +11,9 @@ const AnalysisView = ({ document }) => {
                 setLoading(true);
                 setError(null);
                 try {
-                    const response = await fetch(`/api/documents/${document.id}`);
+                    const response = await fetch(`/api/documents/${document.id}/analyze`, {
+                        method: 'POST',
+                    });
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
@@ -45,25 +47,21 @@ const AnalysisView = ({ document }) => {
         return <div className="analysis-message">No analysis available for this document.</div>;
     }
 
-    const latestAnalysis = analysis.analysis_results && analysis.analysis_results.length > 0
-        ? analysis.analysis_results[analysis.analysis_results.length - 1]
-        : null;
-
     return (
         <div className="analysis-view-container">
             <h2>Analysis for {document.filename}</h2>
-            {!latestAnalysis ? (
+            {!analysis ? (
                 <div className="analysis-message">No analysis results found for this document.</div>
             ) : (
                 <>
                     <h3>Summary</h3>
-                    <p>{latestAnalysis.summary || 'N/A'}</p>
+                    <p>{analysis.summary || 'N/A'}</p>
 
                     <h3>Key Information</h3>
-                    <pre>{latestAnalysis.extracted_info ? JSON.stringify(latestAnalysis.extracted_info, null, 2) : 'N/A'}</pre>
+                    <pre>{analysis.key_information ? JSON.stringify(analysis.key_information, null, 2) : 'N/A'}</pre>
 
                     <h3>Risk Assessment</h3>
-                    <pre>{latestAnalysis.risks_identified ? JSON.stringify(latestAnalysis.risks_identified, null, 2) : 'N/A'}</pre>
+                    <pre>{analysis.risk_assessment ? JSON.stringify(analysis.risk_assessment, null, 2) : 'N/A'}</pre>
                 </>
             )}
         </div>

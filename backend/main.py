@@ -87,7 +87,7 @@ def upload_document(
         mime_type=file.content_type,
         file=file.file,
     )
-    background_tasks.add_task(analysis_service.analyze_document, db, db_document)
+    # background_tasks.add_task(analysis_service.analyze_document, db, db_document)
     return db_document
 
 
@@ -102,6 +102,20 @@ def get_document(document_id: int, db: Session = Depends(get_db), current_user: 
     if not db_document:
         raise HTTPException(status_code=404, detail="Document not found or you don't have permission to access it")
     return db_document
+
+
+@app.post("/api/documents/{document_id}/analyze")
+def analyze_document_on_demand(document_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    db_document = db.query(document.Document).filter(document.Document.id == document_id, document.Document.user_id == current_user.id).first()
+    if not db_document:
+        raise HTTPException(status_code=404, detail="Document not found or you don't have permission to access it")
+    
+    analysis_results = analysis_service.analyze_document(db, db_document)
+    
+    if not analysis_results:
+        raise HTTPException(status_code=500, detail="Failed to analyze document")
+        
+    return analysis_results
 
 
 @app.get("/")

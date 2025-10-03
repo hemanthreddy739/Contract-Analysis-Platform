@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const DocumentUpload = () => {
+const DocumentUpload = ({ onUploadSuccess }) => {
     const [file, setFile] = useState(null);
 
     const handleFileChange = (e) => {
@@ -22,8 +22,14 @@ const DocumentUpload = () => {
             body: formData,
         });
 
-        const data = await response.json();
-        console.log(data);
+        if (response.ok) {
+            onUploadSuccess();
+            setFile(null);
+            e.target.reset();
+        } else {
+            const data = await response.json();
+            alert(`Upload failed: ${data.detail}`);
+        }
     };
 
     return (
