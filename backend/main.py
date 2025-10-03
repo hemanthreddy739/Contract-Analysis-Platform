@@ -118,6 +118,21 @@ def analyze_document_on_demand(document_id: int, db: Session = Depends(get_db), 
     return analysis_results
 
 
+from services import document_service, analysis_service, gemini_analyzer
+
+@app.post("/api/test-analysis")
+async def test_analysis(request: Request):
+    data = await request.json()
+    text = data.get("text")
+    if not text:
+        raise HTTPException(status_code=400, detail="Text not provided")
+    
+    prompt = "Summarize this text"
+    summary = gemini_analyzer.analyze_text(text, prompt)
+    
+    return {"summary": summary}
+
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
