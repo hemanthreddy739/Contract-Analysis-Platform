@@ -48,3 +48,36 @@
   color: #d32f2f; /* Dark red */
   border: 1px solid #ef9a9a; /* Medium red */
 }
+
+/* Tabbed Interface Styles */
+.tabs-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: var(--spacing-lg);
+}
+
+.tab-button {
+  background-color: transparent;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  color: var(--text-color-secondary);
+  transition: all 0.2s ease-in-out;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px; /* To overlap with border-bottom of tabs-nav */
+}
+
+.tab-button:hover {
+  color: var(--primary-color);
+}
+
+.tab-button.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  font-weight: 600;
+}
+
+.tab-content {
+  padding: var(--spacing-md) 0;
+}

@@ -29,6 +29,7 @@ const AnalysisView = ({ document }) => {
     const [analysis, setAnalysis] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [activeTab, setActiveTab] = useState('Summary'); // New state for active tab
 
     useEffect(() => {
         if (document && document.id) {
@@ -95,14 +96,47 @@ const AnalysisView = ({ document }) => {
                 <div className="analysis-message">No analysis results found for this document.</div>
             ) : (
                 <>
-                    <h3>Summary</h3>
-                    <p>{analysis.summary || 'N/A'}</p>
+                    <div className="tabs-nav">
+                        <button
+                            className={`tab-button ${activeTab === 'Summary' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('Summary')}
+                        >
+                            Summary
+                        </button>
+                        <button
+                            className={`tab-button ${activeTab === 'Key Information' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('Key Information')}
+                        >
+                            Key Information
+                        </button>
+                        <button
+                            className={`tab-button ${activeTab === 'Risk Assessment' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('Risk Assessment')}
+                        >
+                            Risk Assessment
+                        </button>
+                    </div>
 
-                    <h3>Key Information</h3>
-                    {keyInfoParsed ? renderJsonAsList(keyInfoParsed) : <p>N/A</p>}
-
-                    <h3>Risk Assessment</h3>
-                    {riskAssessmentParsed ? renderJsonAsList(riskAssessmentParsed) : <p>N/A</p>}
+                    <div className="tab-content">
+                        {activeTab === 'Summary' && (
+                            <div className="summary-content">
+                                <h3>Summary</h3>
+                                <p>{analysis.summary || 'N/A'}</p>
+                            </div>
+                        )}
+                        {activeTab === 'Key Information' && (
+                            <div className="key-info-content">
+                                <h3>Key Information</h3>
+                                {keyInfoParsed ? renderJsonAsList(keyInfoParsed) : <p>N/A</p>}
+                            </div>
+                        )}
+                        {activeTab === 'Risk Assessment' && (
+                            <div className="risk-assessment-content">
+                                <h3>Risk Assessment</h3>
+                                {riskAssessmentParsed ? renderJsonAsList(riskAssessmentParsed) : <p>N/A</p>}
+                            </div>
+                        )}
+                    </div>
                 </>
             )}
         </div>
