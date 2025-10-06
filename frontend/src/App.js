@@ -33,20 +33,22 @@ function App() {
     <Router>
       <AuthProvider>
         <Header />
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <PrivateRoute path="/dashboard">
-            <Dashboard />
-          </PrivateRoute>
-          <Route path="/">
-            <Redirect to="/dashboard" />
-          </Route>
-        </Switch>
+        <main className="container">
+          <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <PrivateRoute path="/dashboard">
+              <Dashboard />
+            </PrivateRoute>
+            <Route path="/">
+              <Redirect to="/dashboard" />
+            </Route>
+          </Switch>
+        </main>
       </AuthProvider>
     </Router>
   );

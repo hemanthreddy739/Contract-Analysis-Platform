@@ -1,0 +1,39 @@
+.document-upload-card {
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius-md);
+  text-align: center;
+  background-color: var(--surface-color);
+  transition: all 0.2s ease-in-out;
+}
+
+.document-upload-card.drag-over {
+  border-color: var(--primary-color);
+  background-color: var(--background-color);
+}
+
+.document-upload-card h2 {
+  font-size: var(--font-size-md);
+  color: var(--text-color-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.document-upload-card p {
+  color: var(--text-color-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.document-upload-card input[type="file"] {
+  display: none; /* Hide default file input */
+}
+
+.document-upload-card .upload-button {
+  margin-top: var(--spacing-md);
+}
+
+.document-upload-card .file-name {
+  margin-top: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--text-color-primary);
+}
