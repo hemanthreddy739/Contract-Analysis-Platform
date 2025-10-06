@@ -119,19 +119,19 @@ const AnalysisView = ({ document }) => {
 
                     <div className="tab-content">
                         {activeTab === 'Summary' && (
-                            <div className="summary-content">
+                            <div className="summary-content scrollable-content">
                                 <h3>Summary</h3>
                                 <p>{analysis.summary || 'N/A'}</p>
                             </div>
                         )}
                         {activeTab === 'Key Information' && (
-                            <div className="key-info-content">
+                            <div className="key-info-content scrollable-content">
                                 <h3>Key Information</h3>
                                 {keyInfoParsed ? renderJsonAsList(keyInfoParsed) : <p>N/A</p>}
                             </div>
                         )}
                         {activeTab === 'Risk Assessment' && (
-                            <div className="risk-assessment-content">
+                            <div className="risk-assessment-content scrollable-content">
                                 <h3>Risk Assessment</h3>
                                 {riskAssessmentParsed ? renderJsonAsList(riskAssessmentParsed) : <p>N/A</p>}
                             </div>

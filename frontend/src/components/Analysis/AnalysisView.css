@@ -81,3 +81,13 @@
 .tab-content {
   padding: var(--spacing-md) 0;
 }
+
+.scrollable-content {
+  max-height: 400px; /* Fixed height for scrollable area */
+  overflow-y: auto;
+  padding-right: var(--spacing-sm); /* Add some padding for scrollbar */
+}
+
+.scrollable-content ul {
+  padding-left: var(--spacing-lg);
+}
