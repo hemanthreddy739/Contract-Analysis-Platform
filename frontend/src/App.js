@@ -41,7 +41,6 @@ function App() {
             <Register />
           </Route>
           <PrivateRoute path="/dashboard">
-            <DocumentUpload />
             <Dashboard />
           </PrivateRoute>
           <Route path="/">
