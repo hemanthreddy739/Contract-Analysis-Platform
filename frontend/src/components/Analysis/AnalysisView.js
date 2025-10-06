@@ -74,23 +74,19 @@ const AnalysisView = ({ document }) => {
     }
 
     let keyInfoParsed = null;
-    if (analysis && typeof analysis.key_information === 'string' && analysis.key_information.trim() !== '') {
-        try {
-            keyInfoParsed = JSON.parse(analysis.key_information);
-        } catch (e) {
-            console.error("Failed to parse key_information JSON:", e);
-            keyInfoParsed = analysis.key_information; // Fallback to raw string if parsing fails
-        }
+    try {
+        keyInfoParsed = analysis.key_information ? JSON.parse(analysis.key_information) : null;
+    } catch (e) {
+        console.error("Failed to parse key_information JSON:", e);
+        keyInfoParsed = analysis.key_information; // Fallback to raw string if parsing fails
     }
 
     let riskAssessmentParsed = null;
-    if (analysis && typeof analysis.risk_assessment === 'string' && analysis.risk_assessment.trim() !== '') {
-        try {
-            riskAssessmentParsed = JSON.parse(analysis.risk_assessment);
-        } catch (e) {
-            console.error("Failed to parse risk_assessment JSON:", e);
-            riskAssessmentParsed = analysis.risk_assessment; // Fallback to raw string if parsing fails
-        }
+    try {
+        riskAssessmentParsed = analysis.risk_assessment ? JSON.parse(analysis.risk_assessment) : null;
+    } catch (e) {
+        console.error("Failed to parse risk_assessment JSON:", e);
+        riskAssessmentParsed = analysis.risk_assessment; // Fallback to raw string if parsing fails
     }
 
     return (
