@@ -1,0 +1,54 @@
+.header {
+  background-color: var(--surface-color);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-brand {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.header-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--spacing-lg);
+}
+
+.header-nav a {
+  color: var(--text-color-primary);
+  font-weight: 500;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.header-nav a:hover {
+  background-color: var(--background-color);
+  text-decoration: none;
+}
+
+.header-nav button {
+  /* Inherit button styles from global, or define specific ones */
+  background-color: var(--primary-color);
+  color: var(--surface-color);
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.header-nav button:hover {
+  background-color: #3A7BD5; /* Darker primary */
+}

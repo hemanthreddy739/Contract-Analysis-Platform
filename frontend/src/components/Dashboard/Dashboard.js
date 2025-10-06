@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import AnalysisView from '../Analysis/AnalysisView';
 import DocumentUpload from '../Upload/DocumentUpload';
+import './Dashboard.css'; // Import the new CSS file
 
 const Dashboard = () => {
     const [documents, setDocuments] = useState([]);
@@ -36,7 +37,7 @@ const Dashboard = () => {
                     {documents.map(doc => (
                         <li key={doc.id} className={selectedDocument && selectedDocument.id === doc.id ? 'selected' : ''}>
                             <span>{doc.filename} - <strong>{doc.status}</strong></span>
-                            <button onClick={() => handleViewAnalysis(doc)}>View Analysis</button>
+                            <button onClick={() => handleViewAnalysis(doc)} className="button button-outline">View Analysis</button>
                         </li>
                     ))}
                 </ul>

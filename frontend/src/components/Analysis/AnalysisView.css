@@ -1,0 +1,93 @@
+.analysis-view-container {
+  /* Inherits card-like styling from parent .analysis-section */
+}
+
+.analysis-view-container h2 {
+  font-size: var(--font-size-lg);
+  color: var(--text-color-primary);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--spacing-sm);
+}
+
+.analysis-view-container h3 {
+  font-size: var(--font-size-md);
+  color: var(--primary-color);
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
+}
+
+.analysis-view-container p {
+  color: var(--text-color-secondary);
+  line-height: 1.8;
+}
+
+.analysis-view-container pre {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-md);
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-color-primary);
+}
+
+.analysis-message {
+  padding: var(--spacing-md);
+  background-color: var(--background-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-color-secondary);
+  text-align: center;
+  font-size: var(--font-size-md);
+}
+
+.analysis-message.error {
+  background-color: #ffebee; /* Light red */
+  color: #d32f2f; /* Dark red */
+  border: 1px solid #ef9a9a; /* Medium red */
+}
+
+/* Tabbed Interface Styles */
+.tabs-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: var(--spacing-lg);
+}
+
+.tab-button {
+  background-color: transparent;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  color: var(--text-color-secondary);
+  transition: all 0.2s ease-in-out;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px; /* To overlap with border-bottom of tabs-nav */
+}
+
+.tab-button:hover {
+  color: var(--primary-color);
+}
+
+.tab-button.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  font-weight: 600;
+}
+
+.tab-content {
+  padding: var(--spacing-md) 0;
+}
+
+.scrollable-content {
+  max-height: 400px; /* Fixed height for scrollable area */
+  overflow-y: auto;
+  padding-right: var(--spacing-sm); /* Add some padding for scrollbar */
+}
+
+.scrollable-content ul {
+  padding-left: var(--spacing-lg);
+}

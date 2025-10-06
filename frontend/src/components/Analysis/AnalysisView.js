@@ -1,9 +1,35 @@
 import React, { useState, useEffect } from 'react';
+import './AnalysisView.css'; // Import the new CSS file
+
+const renderJsonAsList = (data) => {
+    if (typeof data === 'object' && data !== null) {
+        return (
+            <ul>
+                {Object.entries(data).map(([key, value]) => (
+                    <li key={key}>
+                        <strong>{key}:</strong> {renderJsonAsList(value)}
+                    </li>
+                ))}
+            </ul>
+        );
+    } else if (Array.isArray(data)) {
+        return (
+            <ul>
+                {data.map((item, index) => (
+                    <li key={index}>{renderJsonAsList(item)}</li>
+                ))}
+            </ul>
+        );
+    } else {
+        return String(data);
+    }
+};
 
 const AnalysisView = ({ document }) => {
     const [analysis, setAnalysis] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [activeTab, setActiveTab] = useState('Summary'); // New state for active tab
 
     useEffect(() => {
         if (document && document.id) {
@@ -47,6 +73,22 @@ const AnalysisView = ({ document }) => {
         return <div className="analysis-message">No analysis available for this document.</div>;
     }
 
+    let keyInfoParsed = null;
+    try {
+        keyInfoParsed = analysis.key_information ? JSON.parse(analysis.key_information) : null;
+    } catch (e) {
+        console.error("Failed to parse key_information JSON:", e);
+        keyInfoParsed = analysis.key_information; // Fallback to raw string if parsing fails
+    }
+
+    let riskAssessmentParsed = null;
+    try {
+        riskAssessmentParsed = analysis.risk_assessment ? JSON.parse(analysis.risk_assessment) : null;
+    } catch (e) {
+        console.error("Failed to parse risk_assessment JSON:", e);
+        riskAssessmentParsed = analysis.risk_assessment; // Fallback to raw string if parsing fails
+    }
+
     return (
         <div className="analysis-view-container">
             <h2>Analysis for {document.filename}</h2>
@@ -54,14 +96,47 @@ const AnalysisView = ({ document }) => {
                 <div className="analysis-message">No analysis results found for this document.</div>
             ) : (
                 <>
-                    <h3>Summary</h3>
-                    <p>{analysis.summary || 'N/A'}</p>
+                    <div className="tabs-nav">
+                        <button
+                            className={`tab-button ${activeTab === 'Summary' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('Summary')}
+                        >
+                            Summary
+                        </button>
+                        <button
+                            className={`tab-button ${activeTab === 'Key Information' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('Key Information')}
+                        >
+                            Key Information
+                        </button>
+                        <button
+                            className={`tab-button ${activeTab === 'Risk Assessment' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('Risk Assessment')}
+                        >
+                            Risk Assessment
+                        </button>
+                    </div>
 
-                    <h3>Key Information</h3>
-                    <pre>{analysis.key_information ? JSON.stringify(analysis.key_information, null, 2) : 'N/A'}</pre>
-
-                    <h3>Risk Assessment</h3>
-                    <pre>{analysis.risk_assessment ? JSON.stringify(analysis.risk_assessment, null, 2) : 'N/A'}</pre>
+                    <div className="tab-content">
+                        {activeTab === 'Summary' && (
+                            <div className="summary-content scrollable-content">
+                                <h3>Summary</h3>
+                                <p>{analysis.summary || 'N/A'}</p>
+                            </div>
+                        )}
+                        {activeTab === 'Key Information' && (
+                            <div className="key-info-content scrollable-content">
+                                <h3>Key Information</h3>
+                                {keyInfoParsed ? renderJsonAsList(keyInfoParsed) : <p>N/A</p>}
+                            </div>
+                        )}
+                        {activeTab === 'Risk Assessment' && (
+                            <div className="risk-assessment-content scrollable-content">
+                                <h3>Risk Assessment</h3>
+                                {riskAssessmentParsed ? renderJsonAsList(riskAssessmentParsed) : <p>N/A</p>}
+                            </div>
+                        )}
+                    </div>
                 </>
             )}
         </div>
