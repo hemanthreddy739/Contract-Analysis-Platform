@@ -9,3 +9,6 @@ uvicorn
 python-docx
 PyPDF2
 itsdangerous
+pytest
+httpx
+pytest-cov
