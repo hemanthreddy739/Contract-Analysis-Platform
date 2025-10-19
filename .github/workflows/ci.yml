@@ -58,11 +58,11 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: your-dockerhub-username/contract-analysis-backend:latest
+          tags: hemanthreddy739/contract-analysis-backend:latest
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
           push: true
-          tags: your-dockerhub-username/contract-analysis-frontend:latest
+          tags: hemanthreddy739/contract-analysis-frontend:latest
